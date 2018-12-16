@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "684844401982",
+    "firebase_url": "https://gawds-leaderboard.firebaseio.com",
+    "project_id": "gawds-leaderboard",
+    "storage_bucket": "gawds-leaderboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684844401982:android:f838cc0600a9d4e6",
+        "android_client_info": {
+          "package_name": "com.karan.gawdsleaderboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684844401982-oh1vept6tda3n6tvo75sq3avv9mkagj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.karan.gawdsleaderboard",
+            "certificate_hash": "a794462e72281f34c42a0c57abaf5b5211f199b7"
+          }
+        },
+        {
+          "client_id": "684844401982-17gjkg6i9ckovlcvdghpl6albih0su3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCji0DFrgSm-3gy0CEhwLQIC4Q7ZN6M-Tw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684844401982-17gjkg6i9ckovlcvdghpl6albih0su3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
