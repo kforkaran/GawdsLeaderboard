@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> users = new ArrayList<String>();
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    
+
     private int weeks;
 
     // For storing userGithubHandle and all repositories of that githubHandle
