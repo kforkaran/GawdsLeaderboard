@@ -24,6 +24,7 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="gawdsButton"
             android:text="Gawds"
             app:layout_column="0"
             app:layout_columnSpan="2"
