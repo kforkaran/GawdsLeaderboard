@@ -34,25 +34,36 @@ public class AllYear extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference membersDatabaseRefference;
-    private ArrayList<String> membersGithubHandle = new ArrayList<String>();
-    private ArrayList<String> membersNames = new ArrayList<String>();
-    private Map<String , String> membersData = new HashMap<String, String>();
-    private Map<String, ArrayList<String>> userRepos = new HashMap<String, ArrayList<String>>();
-    private Map<String,Integer> handleCommits = new HashMap<String, Integer>();
+    private ArrayList<String> membersGithubHandle;
+    private ArrayList<String> membersNames;
+    private Map<String , String> membersData;
+    private Map<String, ArrayList<String>> userRepos;
+    private Map<String,Integer> handleCommits;
     private ListView resultListView;
-    private ArrayList<String> containsResult= new ArrayList<String>();
+    private ArrayList<String> containsResult;
     private ArrayAdapter<String> adapter;
 
     public void weeksButton(View view){
 
         weeksToConsider = Integer.parseInt(weeksAllYearEditText.getText().toString());
-        if(weeksToConsider>52){
-        weeksToConsider=52;
+
+        if(weeksToConsider>52)
+        {
+            weeksToConsider=52;
         }
+
+        membersGithubHandle = new ArrayList<String>();
+        membersNames = new ArrayList<String>();
+        membersData = new HashMap<String, String>();
+        userRepos = new HashMap<String, ArrayList<String>>();
+        handleCommits = new HashMap<String, Integer>();
+        containsResult= new ArrayList<String>();
+
         adapter = new ArrayAdapter<String >(this,android.R.layout.simple_list_item_1,containsResult);
         resultListView.setAdapter(adapter);
         database = FirebaseDatabase.getInstance();
         membersDatabaseRefference = database.getReference("users");
+
         membersDatabaseRefference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
