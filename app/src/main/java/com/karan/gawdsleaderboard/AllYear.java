@@ -29,60 +29,65 @@ import java.util.regex.Pattern;
 
 public class AllYear extends AppCompatActivity {
 
-//     private EditText weeksAllYearEditText = (EditText)findViewById(R.id.weeksAllYearEditText);
+     private EditText weeksAllYearEditText;
      private int weeksToConsider;
 
-//    private FirebaseDatabase database;
-//    private DatabaseReference membersDatabaseRefference;
-//    private ArrayList<String> membersGithubHandle = new ArrayList<String>();
-//    private ArrayList<String> membersNames = new ArrayList<String>();
-//    private Map<String , String> membersData = new HashMap<String, String>();
-//    private Map<String, ArrayList<String>> userRepos = new HashMap<String, ArrayList<String>>();
-//    private Map<String,Integer> handleCommits = new HashMap<String, Integer>();
-//    private ListView resultListView = (ListView)findViewById(R.id.resultListView);
-//    private ArrayList<String> containsResult= new ArrayList<String>();
-//    private ArrayAdapter<String> adapter;
+    private FirebaseDatabase database;
+    private DatabaseReference membersDatabaseRefference;
+    private ArrayList<String> membersGithubHandle = new ArrayList<String>();
+    private ArrayList<String> membersNames = new ArrayList<String>();
+    private Map<String , String> membersData = new HashMap<String, String>();
+    private Map<String, ArrayList<String>> userRepos = new HashMap<String, ArrayList<String>>();
+    private Map<String,Integer> handleCommits = new HashMap<String, Integer>();
+    private ListView resultListView;
+    private ArrayList<String> containsResult= new ArrayList<String>();
+    private ArrayAdapter<String> adapter;
 
-//    public void weeksButton(View view){
-//
-//        weeksToConsider = Integer.parseInt(weeksAllYearEditText.getText().toString());
-//        adapter = new ArrayAdapter<String >(this,android.R.layout.simple_list_item_1,containsResult);
-//        resultListView.setAdapter(adapter);
-//        database = FirebaseDatabase.getInstance();
-//        membersDatabaseRefference = database.getReference("users");
-//        membersDatabaseRefference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot ds : dataSnapshot.getChildren()){
-//                    MembersData mData = ds.getValue(MembersData.class);
-//                    membersNames.add(mData.getName());
-//                    membersGithubHandle.add(mData.getHandle());
-//                    membersData.put(mData.getName(),mData.getHandle());
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//        for(String userHandles : membersGithubHandle){
-//            getRepo(userHandles,weeksToConsider);
-//        }
-//
-//        for(String result : membersGithubHandle){
-//           // containsResult.add(result);
-//            //containsResult.add(handleCommits.get(result).toString());
-//        }
-//
-//    }
+    public void weeksButton(View view){
+
+        weeksToConsider = Integer.parseInt(weeksAllYearEditText.getText().toString());
+    if(weeksToConsider>52){
+        weeksToConsider=52;
+    }
+        adapter = new ArrayAdapter<String >(this,android.R.layout.simple_list_item_1,containsResult);
+        resultListView.setAdapter(adapter);
+        database = FirebaseDatabase.getInstance();
+        membersDatabaseRefference = database.getReference("users");
+        membersDatabaseRefference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    MembersData mData = ds.getValue(MembersData.class);
+                    membersNames.add(mData.getName());
+                    membersGithubHandle.add(mData.getHandle());
+                    membersData.put(mData.getName(),mData.getHandle());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        for(String userHandles : membersGithubHandle){
+            getRepo(userHandles,weeksToConsider);
+        }
+
+        for(String result : membersGithubHandle){
+             containsResult.add(result);
+             containsResult.add(handleCommits.get(result).toString());
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_year);
+        weeksAllYearEditText = (EditText)findViewById(R.id.weeksAllYearEditText);
+        resultListView = (ListView)findViewById(R.id.resultListView);
     }
 
     public void getRepo(String userGithubHandle,Integer weeks){
@@ -107,12 +112,12 @@ public class AllYear extends AppCompatActivity {
 
             e.printStackTrace();
         }
-        //userRepos.put(userGithubHandle,repos);
+           userRepos.put(userGithubHandle,repos);
 
         for(String repository : repos){
             commits += getCommits(userGithubHandle,repository,weeks);
         }
-        //handleCommits.put(userGithubHandle,commits);
+           handleCommits.put(userGithubHandle,commits);
 
     }
 
