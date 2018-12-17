@@ -46,9 +46,9 @@ public class AllYear extends AppCompatActivity {
     public void weeksButton(View view){
 
         weeksToConsider = Integer.parseInt(weeksAllYearEditText.getText().toString());
-    if(weeksToConsider>52){
+        if(weeksToConsider>52){
         weeksToConsider=52;
-    }
+        }
         adapter = new ArrayAdapter<String >(this,android.R.layout.simple_list_item_1,containsResult);
         resultListView.setAdapter(adapter);
         database = FirebaseDatabase.getInstance();
