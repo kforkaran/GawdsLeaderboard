@@ -1,4 +1,4 @@
-package com.karan.gawdsleaderboard;
+package com.karan.gawdsleaderboard.model;
 
 public class MembersData {
     private String name;
