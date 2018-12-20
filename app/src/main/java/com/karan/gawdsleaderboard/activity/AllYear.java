@@ -1,16 +1,24 @@
 package com.karan.gawdsleaderboard.activity;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.karan.gawdsleaderboard.model.Commits;
 import com.karan.gawdsleaderboard.model.MembersData;
 import com.karan.gawdsleaderboard.R;
 import com.karan.gawdsleaderboard.model.Repository;
@@ -30,6 +38,7 @@ public class AllYear extends AppCompatActivity {
 
 //     private EditText weeksAllYearEditText;
 //     private int weeksToConsider;
+    public int NoOfRepos;
 
     public ArrayList<String> membersGithubHandle = new ArrayList<String>();
     public ArrayList<String> membersNames = new ArrayList<String>();
@@ -42,6 +51,8 @@ public class AllYear extends AppCompatActivity {
     private ListView resultListView;
     private ArrayList<String> containsResult = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
+    public Map<String, Integer> memberAndNumberOfRepos = new HashMap<String, Integer>();
+    public Map<String, List<String>> githubHandleListOfRepos = new HashMap<String, List<String>>();
 
 //    public void weeksButton(View view){
 //
@@ -69,21 +80,80 @@ public class AllYear extends AppCompatActivity {
 //        }
 //
 //    }
+//    public void getCommitCountOfaRepo(String userGithubHandle, final String repo){
+//
+//        ApiInterface apiService = ApiClient.getClientCommits().create(ApiInterface.class);
+//        Call<List<Commits>> call2 = apiService.getCommitsAuthor(userGithubHandle,repo);
+//
+//        call2.enqueue(new Callback<List<Commits>>() {
+//            @Override
+//            public void onResponse(Call<List<Commits>> call, Response<List<Commits>> response) {
+//                List<Commits> commitsAuthor = response.body();
+//                Toast.makeText(AllYear.this, ""+commitsAuthor.get(0).getAuthor().get(1), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AllYear.this, repo+" : "+commitsAuthor.size(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Commits>> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
+
+    public void getReposOfaMember(final String userGithubHandle){
+        ApiInterface apiService = ApiClient.getClientRepo().create(ApiInterface.class);
+        Call<List<Repository>> call = apiService.getRepositories(userGithubHandle);
+
+        call.enqueue(new Callback<List<Repository>>() {
+            @Override
+            public void onResponse(Call<List<Repository>> call, Response<List<Repository>> response) {
+                 List<Repository> repoList = response.body();
+                 List<String> repoNames = new ArrayList<String>();
+                 for(int i = 0; i<repoList.size();i++)
+                 {
+                    repoNames.add(repoList.get(i).getName());
+                 }
+
+                 githubHandleListOfRepos.put(userGithubHandle, repoNames);
+                //Toast.makeText(AllYear.this, userGithubHandle+" : "+repoList.size(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AllYear.this, repoNames.toString(), Toast.LENGTH_SHORT).show();
+//                for(int i = 0; i<repoList.size();i++)
+//                {
+//                    containsResult.add(repoList.get(i).getName());
+//                }
+//                adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,containsResult);
+//                resultListView.setAdapter(adapter);
+                //resultListView.setAdapter(new Adapter(getApplicationContext(), repoList));
+            }
+
+            @Override
+            public void onFailure(Call<List<Repository>> call, Throwable t) {
+                Toast.makeText(AllYear.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+    public void go(View view){
+        for(String s : membersGithubHandle) {
+            for (int i = 0; i < githubHandleListOfRepos.get(s).size(); i++) {
+                //getCommitCountOfaRepo(s,githubHandleListOfRepos.get(s).get(i));
+                Toast.makeText(AllYear.this, githubHandleListOfRepos.get(s).get(i), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_year);
+        final Button button = (Button) findViewById(R.id.weeksAllYearButton);
 
-        adapter = new ArrayAdapter<String >(this,android.R.layout.simple_list_item_1,containsResult);
-
+        button.setVisibility(View.INVISIBLE);
 //        weeksAllYearEditText = (EditText)findViewById(R.id.weeksAllYearEditText);
         resultListView = findViewById(R.id.resultListView);
-
         database = FirebaseDatabase.getInstance();
         membersDatabaseRefference = database.getReference("users");
-
-        final ApiInterface apiService = ApiClient.getClientRepo().create(ApiInterface.class);
 
         membersDatabaseRefference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -94,26 +164,14 @@ public class AllYear extends AppCompatActivity {
                     membersNames.add(mData.getName());
                     membersGithubHandle.add(mData.getHandle());
                     membersData.put(mData.getName(),mData.getHandle());
-
                 }
-                for(String string : membersGithubHandle)
+                button.setVisibility(View.VISIBLE);
+                for(String s : membersGithubHandle)
                 {
-                    Call<Repository> call = apiService.getRepositories(string);
-                    call.enqueue(new Callback<Repository>() {
-                        @Override
-                        public void onResponse(Call<Repository> call, Response<Repository> response) {
-                            containsResult.add(response.body().getName());
-                        }
-
-                        @Override
-                        public void onFailure(Call<Repository> call, Throwable t) {
-
-                        }
-                    });
-                    resultListView.setAdapter(adapter);
+                    getReposOfaMember(s);
+                    //Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AllYear.this, githubHandleListOfRepos.get(s).toString(), Toast.LENGTH_SHORT).show();
                 }
-
-
             }
 
             @Override
@@ -121,8 +179,6 @@ public class AllYear extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 //    public void getRepo(String userGithubHandle,Integer weeks){
