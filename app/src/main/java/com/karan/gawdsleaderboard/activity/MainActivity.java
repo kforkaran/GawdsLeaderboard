@@ -17,6 +17,7 @@ import com.karan.gawdsleaderboard.rest.ApiClient;
 import com.karan.gawdsleaderboard.rest.ApiInterface;
 
 import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,51 +30,26 @@ public class MainActivity extends AppCompatActivity {
 
     private String client_id ="c8f7c00e27aa4c85e7fd";
     private String client_secret = "32bcc720ef697242693a6221b70ba2eef5c38e8c";
-    private String redirect_url = "googlecom://callback";
+    private String redirect_url = "localhost://callback";
 
-//    private FirebaseAuth mFirebaseAuth;
-//    private FirebaseAuth.AuthStateListener mAuthStateListener;
-//    private static final int RC_SIGN_IN = 123;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private static final int RC_SIGN_IN = 123;
+    private boolean isAuthenticated = false;
 
     public void gawdsButton(View view){
         Intent intent = new Intent(getApplicationContext(),AllYear.class);
         startActivity(intent);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://github.com/login/oauth/authorize"+"?client_id=" + client_id + "&scope=repo&redirect_url="+ redirect_url ));
-        startActivity(intent);
-//        mFirebaseAuth = FirebaseAuth.getInstance();
-//
-//        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                    startActivityForResult(
-//                            AuthUI.getInstance()
-//                                    .createSignInIntentBuilder()
-//                                    .setIsSmartLockEnabled(false)
-//                                    .setAvailableProviders(
-//                                            Arrays.asList(
-//                                                    new AuthUI.IdpConfig.GitHubBuilder().build()))
-//                                    .build(),RC_SIGN_IN);
-//            }
-//        };
-
-
-//        Intent intent = new Intent(Intent.ACTION_VIEW,
-//                Uri.parse("https://github.com/login/oauth/authorize"+"?client_id="+clientId+"&scope=repo&redirect_url="+redirectUrl));
-//        startActivity(intent);
+    public void isSignedIn(View view){
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         Uri uri = getIntent().getData();
 
         if(uri!=null && uri.toString().startsWith(redirect_url)){
@@ -87,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             accessTokenCall.enqueue(new Callback<AccessToken>() {
                 @Override
                 public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+                    AccessToken accessToken = response.body();
                     Toast.makeText(MainActivity.this, "Access Token received", Toast.LENGTH_SHORT).show();
                 }
 
