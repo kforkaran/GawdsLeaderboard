@@ -1,36 +1,22 @@
 package com.karan.gawdsleaderboard.model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class AccessToken {
 
-    @SerializedName("access_token")
-    private String accessToken;
-
-    @SerializedName("token_type")
-    private String tokentype;
+    private String access_token;
 
     public AccessToken() {
     }
 
-    public AccessToken(String accessToken, String tokentype) {
-        this.accessToken = accessToken;
-        this.tokentype = tokentype;
+    public AccessToken(String access_token) {
+        this.access_token = access_token;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getAccess_token() {
+        return access_token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 
-    public String getTokentype() {
-        return tokentype;
-    }
-
-    public void setTokentype(String tokentype) {
-        this.tokentype = tokentype;
-    }
 }

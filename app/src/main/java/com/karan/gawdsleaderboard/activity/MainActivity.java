@@ -50,29 +50,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Uri uri = getIntent().getData();
-
-        if(uri!=null && uri.toString().startsWith(redirect_url)){
-            String code = uri.getQueryParameter("code");
-
-            ApiInterface apiService = ApiClient.getAccessToken().create(ApiInterface.class);
-            Call<AccessToken> accessTokenCall = apiService.getAccessToken(
-                    client_id,client_secret,code
-            );
-
-            accessTokenCall.enqueue(new Callback<AccessToken>() {
-                @Override
-                public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-                    AccessToken accessToken = response.body();
-                    Toast.makeText(MainActivity.this, "Access Token received", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(Call<AccessToken> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "Nooo", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
     }
 }

@@ -116,8 +116,8 @@ public class AllYear extends AppCompatActivity {
                  }
 
                  githubHandleListOfRepos.put(userGithubHandle, repoNames);
-                //Toast.makeText(AllYear.this, userGithubHandle+" : "+repoList.size(), Toast.LENGTH_SHORT).show();
-                //Toast.makeText(AllYear.this, repoNames.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllYear.this, userGithubHandle+" : "+repoList.size(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllYear.this, repoNames.toString(), Toast.LENGTH_SHORT).show();
 //                for(int i = 0; i<repoList.size();i++)
 //                {
 //                    containsResult.add(repoList.get(i).getName());
@@ -136,6 +136,7 @@ public class AllYear extends AppCompatActivity {
     }
     public void go(View view){
         for(String s : membersGithubHandle) {
+            Toast.makeText(this, s+" repos", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < githubHandleListOfRepos.get(s).size(); i++) {
                 //getCommitCountOfaRepo(s,githubHandleListOfRepos.get(s).get(i));
                 Toast.makeText(AllYear.this, githubHandleListOfRepos.get(s).get(i), Toast.LENGTH_SHORT).show();
